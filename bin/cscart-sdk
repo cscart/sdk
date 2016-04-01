@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+
+$root_dir = realpath(__DIR__ . '/..');
+
+require_once $root_dir . '/vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+
+$application = new Application();
+$application->add(new \Tygh\Sdk\Commands\AddonSymlinkCommand());
+$application->run();
+

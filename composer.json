@@ -1,0 +1,24 @@
+{
+    "name": "cscart/sdk",
+    "description": "Command-line tools for CS-Cart & Multivendor developers",
+    "require": {
+        "symfony/console": "~3.0"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "Tygh\\": "src/"
+        }
+    },
+
+    "bin": ["bin/cscart-sdk"],
+
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexander Bolshakov",
+            "email": "abolshakov@cs-cart.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
