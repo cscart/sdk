@@ -8,6 +8,8 @@ require_once $root_dir . '/vendor/autoload.php';
 use Symfony\Component\Console\Application;
 
 $application = new Application();
+$application->setName('CS-Cart Command-line Tools');
+
 $application->add(new \Tygh\Sdk\Commands\AddonSymlinkCommand());
 $application->run();
 

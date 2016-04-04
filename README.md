@@ -14,10 +14,29 @@ $ composer global install cscart/sdk
 ```
 
 ### Executing commands
-...
+
+```bash
+$ cscart-sdk command:name
+```
 
 ### Command list
-...
+
+##### addon:symlink
+Creates symlinks for add-on files at the CS-Cart installation directory, allowing you to develop and store add-on files in a separate Git repository.
+```
+Usage:
+  cscart-sdk addon:symlink [options] [--] <name> <addon-directory> <cart-directory>
+
+Arguments:
+  name                  Add-on ID (name)
+  addon-directory       Path to directory with add-on files
+  cart-directory        Path to CS-Cart installation directory
+
+Options:
+  -r, --relative        Created symlinks will have a relative path to the target file. By default the created symlinks have an absolute path to target.
+```
+
+
 
 ## Contributing
 To contribute to this project, you need to know how to work with Git and GitHub:
