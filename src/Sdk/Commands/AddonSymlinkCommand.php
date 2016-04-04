@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Tygh\Sdk\Entities\Addon;
 
 class AddonSymlinkCommand extends Command
 {
@@ -51,46 +52,9 @@ class AddonSymlinkCommand extends Command
 
         chdir($abs_addon_path);
 
-        $addon_files_glob_masks = [
-            // General files
-            "app/addons/{$addon_id}",
-            "var/langs/**/addons/{$addon_id}.po",
-
-            // Backend templates and assets
-            "design/backend/css/addons/{$addon_id}",
-            "design/backend/mail/templates/addons/{$addon_id}",
-            "design/backend/media/images/addons/{$addon_id}",
-            "design/backend/media/fonts/addons/{$addon_id}",
-            "design/backend/templates/addons/{$addon_id}",
-
-            // Frontend templates and assets
-            "design/themes/**/css/addons/{$addon_id}",
-            "design/themes/**/templates/addons/{$addon_id}",
-            "design/themes/**/layouts/addons/{$addon_id}",
-            "design/themes/**/mail/templates/addons/{$addon_id}",
-            "design/themes/**/media/images/addons/{$addon_id}",
-            "design/themes/**/media/images/logos/addons/{$addon_id}",
-        ];
-
-        $addon_xml_manifest_path = "{$abs_addon_path}app/addons/{$addon_id}/addon.xml";
-        if (file_exists($addon_xml_manifest_path)) {
-            $addon_xml_manifest = simplexml_load_file($addon_xml_manifest_path);
-
-            if (!empty($addon_xml_manifest->files->file)) {
-                foreach ($addon_xml_manifest->files->file as $additional_file) {
-                    $addon_files_glob_masks[] = $additional_file;
-                }
-            }
-        }
-
-        $glob_matches = [];
-        foreach ($addon_files_glob_masks as $glob_mask) {
-            $glob_mask = $abs_addon_path . $glob_mask;
-
-            foreach (glob($glob_mask) as $glob_mask_match) {
-                $glob_matches[] = substr_replace($glob_mask_match, '', 0, strlen($abs_addon_path));
-            }
-        }
+        $addon = new Addon($addon_id, $abs_addon_path);
+        $addon_files_glob_masks = $addon->getFilesGlobMasks();
+        $glob_matches = $addon->matchFilesAgainstGlobMasks($addon_files_glob_masks, $abs_addon_path);
 
         foreach ($glob_matches as $rel_filepath) {
             $abs_addon_filepath = $abs_addon_path . $rel_filepath;

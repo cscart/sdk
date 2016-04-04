@@ -23,9 +23,11 @@ $ cscart-sdk command:name
 
 ##### addon:symlink
 Creates symlinks for add-on files at the CS-Cart installation directory, allowing you to develop and store add-on files in a separate Git repository.
+
 ```
+$ cscart-sdk addon:symlink --help
 Usage:
-  cscart-sdk addon:symlink [options] [--] <name> <addon-directory> <cart-directory>
+  addon:symlink [options] [--] <name> <addon-directory> <cart-directory>
 
 Arguments:
   name                  Add-on ID (name)
@@ -34,8 +36,43 @@ Arguments:
 
 Options:
   -r, --relative        Created symlinks will have a relative path to the target file. By default the created symlinks have an absolute path to target.
+  -h, --help            Display this help message
+  -q, --quiet           Do not output any message
+  -V, --version         Display this application version
+      --ansi            Force ANSI output
+      --no-ansi         Disable ANSI output
+  -n, --no-interaction  Do not ask any interactive question
+  -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+Help:
+ Creates symlinks for add-on files at the CS-Cart installation directory, allowing you to develop and store add-on files in a separate Git repository.
 ```
 
+##### addon:export
+Moves all add-on files to the separate directory, preserving the structure of directories.
+
+```
+$ cscart-sdk addon:export --help
+Usage:
+  addon:export <name> <cart-directory> <addon-directory>
+
+Arguments:
+  name                  Add-on ID (name)
+  cart-directory        Path to CS-Cart installation directory
+  addon-directory       Path to directory where files should be moved to
+
+Options:
+  -h, --help            Display this help message
+  -q, --quiet           Do not output any message
+  -V, --version         Display this application version
+      --ansi            Force ANSI output
+      --no-ansi         Disable ANSI output
+  -n, --no-interaction  Do not ask any interactive question
+  -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+Help:
+ Moves all add-on files to the separate directory, preserving the structure of directories.
+```
 
 
 ## Contributing
