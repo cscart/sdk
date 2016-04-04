@@ -10,7 +10,7 @@ You'll need [Composer](https://getcomposer.org) installed in your system. Check 
 
 When the Composer is installed, just execute this command in your console:
 ```bash
-$ composer global install cscart/sdk
+$ composer global require cscart/sdk
 ```
 
 ### Executing commands
@@ -141,7 +141,7 @@ Don't forget to specify path to the correct directory where you cloned your fork
 After that, execute this command:
 
 ```sh
-$ composer global install "cscart/sdk"
+$ composer global require cscart/sdk
 ```
 
 You need to do this only once; there is no need to re-install the local package every time you make a change in code. Directory with forked repository will be symlinked to your globally installed Composer packages directory.
