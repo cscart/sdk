@@ -49,7 +49,14 @@ class Addon
             "design/themes/**/layouts/addons/{$this->id}",
             "design/themes/**/mail/templates/addons/{$this->id}",
             "design/themes/**/media/images/addons/{$this->id}",
-            "design/themes/**/media/images/logos/addons/{$this->id}",
+            "design/themes/**/media/images/logos/addons/{$this->id}", 
+            
+            "var/themes_repository/**/css/addons/{$this->id}",
+            "var/themes_repository/**/templates/addons/{$this->id}",
+            "var/themes_repository/**/layouts/addons/{$this->id}",
+            "var/themes_repository/**/mail/templates/addons/{$this->id}",
+            "var/themes_repository/**/media/images/addons/{$this->id}",
+            "var/themes_repository/**/media/images/logos/addons/{$this->id}",
         ];
 
         if (file_exists($this->getXmlSchemePath())) {

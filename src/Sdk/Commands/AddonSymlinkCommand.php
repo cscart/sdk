@@ -6,6 +6,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Filesystem\Filesystem;
 use Tygh\Sdk\Entities\Addon;
 
 class AddonSymlinkCommand extends Command
@@ -45,6 +47,8 @@ class AddonSymlinkCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $fs = new Filesystem();
+
         $addon_id = $input->getArgument('name');
 
         $abs_cart_path = rtrim(realpath($input->getArgument('cart-directory')), '\\/') . '/';
@@ -56,82 +60,65 @@ class AddonSymlinkCommand extends Command
         $addon_files_glob_masks = $addon->getFilesGlobMasks();
         $glob_matches = $addon->matchFilesAgainstGlobMasks($addon_files_glob_masks, $abs_addon_path);
 
+        $output->writeln(sprintf('<fg=magenta;options=bold>Creating symlinks at the "%s" directory:</>',
+            $abs_cart_path
+        ));
+
         foreach ($glob_matches as $rel_filepath) {
             $abs_addon_filepath = $abs_addon_path . $rel_filepath;
-            $abs_cart_filepath = $abs_cart_path . $rel_filepath;
 
-            chdir(dirname($abs_cart_filepath));
+            // Add-on templates at the "var/themes_repository/" directory will be
+            // symlinked to the "design/themes/" directory.
+            if (mb_strpos($rel_filepath, 'var/themes_repository/') === 0) {
+                $abs_cart_filepath = $abs_cart_path
+                    . 'design/themes/'
+                    . mb_substr($rel_filepath, mb_strlen('var/themes_repository/'));
+            } else {
+                $abs_cart_filepath = $abs_cart_path . $rel_filepath;
+            }
 
             // Delete existing files and links located at cart directory
             clearstatcache(true, $abs_cart_filepath);
 
-            $is_link = is_link($abs_cart_filepath);
-            $is_file = $is_link ? is_file(readlink($abs_cart_filepath)) : is_file($abs_cart_filepath);
-            $is_dir = $is_link ? is_dir(readlink($abs_cart_filepath)) : is_dir($abs_cart_filepath);
+            if (file_exists($abs_cart_filepath)) {
+                $is_link = is_link($abs_cart_filepath);
+                $is_file = $is_link ? is_file(readlink($abs_cart_filepath)) : is_file($abs_cart_filepath);
+                $is_dir = $is_link ? is_dir(readlink($abs_cart_filepath)) : is_dir($abs_cart_filepath);
 
-            if ($is_file || $is_link) {
-                unlink($abs_cart_filepath);
-            } elseif ($is_dir) {
-                rmdir($abs_cart_filepath);
+                // Confirm overwriting of the found conflicting file or directory on the same path.
+                // We only ask confirmation for files which are not symbolic links, because we assume
+                // that symbolic links were created by this command earlier and can be overwritten without
+                // the loss of any data.
+                if (!$is_link && ($is_file || $is_dir)) {
+                    $helper = $this->getHelper('question');
+                    $question = new ConfirmationQuestion(sprintf(
+                        '<question>%s "%s" already exists. Overwrite? [y/N]:</question> ',
+                        $is_dir ? 'Directory' : 'File',
+                        $abs_cart_filepath
+                    ), false);
+
+                    if (!$helper->ask($input, $output, $question)) {
+                        continue;
+                    }
+                }
+
+                $fs->remove($abs_cart_filepath);
             }
 
             $symlink_target_filepath = $input->getOption('relative')
-                ? $this->findRelativePath(dirname($abs_cart_filepath), $abs_addon_filepath)
+                ? $fs->makePathRelative(
+                    dirname($abs_addon_filepath), dirname($abs_cart_filepath)
+                ) . basename($abs_cart_filepath)
                 : $abs_addon_filepath;
 
-            $symlink_created = symlink(
+            $fs->symlink(
                 $symlink_target_filepath,
                 $abs_cart_filepath
             );
 
-            $output->writeln(sprintf('Creating symlink for %s... %s',
-                $rel_filepath,
-                $symlink_created ? '<info>OK</info>' : '<error>FAILED</error>'
+            $output->writeln(sprintf('Creating symlink for %s... <info>OK</info>',
+                $rel_filepath
             ));
         }
-    }
-
-    /**
-     * Find the relative file system path between two file system paths
-     *
-     * @param string $frompath Path to start from
-     * @param string $topath Path we want to end up in
-     *
-     * @link https://gist.github.com/ohaal/2936041
-     *
-     * @return string Path leading from $frompath to $topath
-     */
-    protected function findRelativePath($frompath, $topath)
-    {
-        $from = explode(DIRECTORY_SEPARATOR, $frompath); // Folders/File
-        $to = explode(DIRECTORY_SEPARATOR, $topath); // Folders/File
-        $relpath = '';
-
-        $i = 0;
-        // Find how far the path is the same
-        while (isset($from[$i]) && isset($to[$i])) {
-            if ($from[$i] != $to[$i]) {
-                break;
-            }
-            $i++;
-        }
-        $j = count($from) - 1;
-        // Add '..' until the path is the same
-        while ($i <= $j) {
-            if (!empty($from[$j])) {
-                $relpath .= '..' . DIRECTORY_SEPARATOR;
-            }
-            $j--;
-        }
-        // Go to folder from where it starts differing
-        while (isset($to[$i])) {
-            if (!empty($to[$i])) {
-                $relpath .= $to[$i] . DIRECTORY_SEPARATOR;
-            }
-            $i++;
-        }
-
-        // Strip last separator
-        return substr($relpath, 0, -1);
     }
 }

@@ -54,12 +54,12 @@ Moves all add-on files to the separate directory, preserving the structure of di
 ```
 $ cscart-sdk addon:export --help
 Usage:
-  addon:export <name> <cart-directory> <addon-directory>
+  addon:export <name> <addon-directory> <cart-directory>
 
 Arguments:
   name                  Add-on ID (name)
-  cart-directory        Path to CS-Cart installation directory
   addon-directory       Path to directory where files should be moved to
+  cart-directory        Path to CS-Cart installation directory
 
 Options:
   -h, --help            Display this help message
@@ -74,6 +74,32 @@ Help:
  Moves all add-on files to the separate directory, preserving the structure of directories.
 ```
 
+##### addon:sync
+Synchronizes add-on files between CS-Cart installation directory and the separate directory storing all add-on files. Calling this command has the same effect as calling the "addon:export" and "addon:symlink" commands simultaneously.
+
+```
+$ cscart-sdk addon:sync --help
+Usage:
+  addon:sync [options] [--] <name> <addon-directory> <cart-directory>
+
+Arguments:
+  name                  Add-on ID (name)
+  addon-directory       Path to directory where files should be moved to
+  cart-directory        Path to CS-Cart installation directory
+
+Options:
+  -r, --relative        Created symlinks will have a relative path to the target file. By default the created symlinks have an absolute path to target.
+  -h, --help            Display this help message
+  -q, --quiet           Do not output any message
+  -V, --version         Display this application version
+      --ansi            Force ANSI output
+      --no-ansi         Disable ANSI output
+  -n, --no-interaction  Do not ask any interactive question
+  -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+Help:
+ Synchronizes add-on files between CS-Cart installation directory and the separate directory storing all add-on files. Calling this command has the same effect as calling the "addon:export" and "addon:symlink" commands simultaneously.
+```
 
 ## Contributing
 To contribute to this project, you need to know how to work with Git and GitHub:

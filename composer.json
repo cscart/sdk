@@ -1,8 +1,11 @@
 {
     "name": "cscart/sdk",
     "description": "Command-line tools for CS-Cart & Multivendor developers",
+
     "require": {
-        "symfony/console": "~3.0"
+        "symfony/console": "~3.0",
+        "symfony/filesystem": "~3.0",
+        "ext-mbstring": "*"
     },
 
     "autoload": {
@@ -19,6 +22,5 @@
             "name": "Alexander Bolshakov",
             "email": "abolshakov@cs-cart.com"
         }
-    ],
-    "minimum-stability": "dev"
+    ]
 }
