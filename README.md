@@ -30,19 +30,20 @@ Usage:
   addon:symlink [options] [--] <name> <addon-directory> <cart-directory>
 
 Arguments:
-  name                  Add-on ID (name)
-  addon-directory       Path to directory with add-on files
-  cart-directory        Path to CS-Cart installation directory
+  name                       Add-on ID (name)
+  addon-directory            Path to directory with add-on files
+  cart-directory             Path to CS-Cart installation directory
 
 Options:
-  -r, --relative        Created symlinks will have a relative path to the target file. By default the created symlinks have an absolute path to target.
-  -h, --help            Display this help message
-  -q, --quiet           Do not output any message
-  -V, --version         Display this application version
-      --ansi            Force ANSI output
-      --no-ansi         Disable ANSI output
-  -n, --no-interaction  Do not ask any interactive question
-  -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+  -r, --relative             Created symlinks will have a relative path to the target file. By default the created symlinks have an absolute path to target.
+      --templates-to-design  Whether to take the add-on templates from "var/themes_repository" path at the add-on directory and put them at "design/themes" path in the CS-Cart installation directory . When this option is not specified, the templates are being taken from "var/themes_repository" and also put into "var/themes_repository" directory.
+  -h, --help                 Display this help message
+  -q, --quiet                Do not output any message
+  -V, --version              Display this application version
+      --ansi                 Force ANSI output
+      --no-ansi              Disable ANSI output
+  -n, --no-interaction       Do not ask any interactive question
+  -v|vv|vvv, --verbose       Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
 Help:
  Creates symlinks for add-on files at the CS-Cart installation directory, allowing you to develop and store add-on files in a separate Git repository.
@@ -57,19 +58,20 @@ Usage:
   addon:export [options] [--] <name> <addon-directory> <cart-directory>
 
 Arguments:
-  name                  Add-on ID (name)
-  addon-directory       Path to directory where files should be moved to
-  cart-directory        Path to CS-Cart installation directory
+  name                         Add-on ID (name)
+  addon-directory              Path to directory where files should be moved to
+  cart-directory               Path to CS-Cart installation directory
 
 Options:
-  -d, --delete          Files and directories will be moved instead of being copied.
-  -h, --help            Display this help message
-  -q, --quiet           Do not output any message
-  -V, --version         Display this application version
-      --ansi            Force ANSI output
-      --no-ansi         Disable ANSI output
-  -n, --no-interaction  Do not ask any interactive question
-  -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+  -d, --delete                 Files and directories will be moved instead of being copied.
+      --templates-from-design  Whether to take the add-on templates from "design/themes" path at CS-Cart installation directory and put them at "var/themes_repository" path in the add-on files directory. When this option is not specified, the templates are being taken from "var/themes_repository" and also put into "var/themes_repository" directory.
+  -h, --help                   Display this help message
+  -q, --quiet                  Do not output any message
+  -V, --version                Display this application version
+      --ansi                   Force ANSI output
+      --no-ansi                Disable ANSI output
+  -n, --no-interaction         Do not ask any interactive question
+  -v|vv|vvv, --verbose         Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
 Help:
  Copies or moves all add-on files to the separate directory, preserving the structure of directories.

@@ -14,6 +14,7 @@ use Tygh\Sdk\Entities\Addon;
 class AddonExportCommand extends Command
 {
     use ValidateCartPathTrait;
+
     /**
      * @inheritdoc
      */
@@ -40,7 +41,12 @@ class AddonExportCommand extends Command
                 'd',
                 InputOption::VALUE_NONE,
                 'Files and directories will be moved instead of being copied.'
-            );;
+            )
+            ->addOption('templates-from-design',
+                null,
+                InputOption::VALUE_NONE,
+                'Whether to take the add-on templates from "design/themes" path at CS-Cart installation directory and put them at "var/themes_repository" path in the add-on files directory. When this option is not specified, the templates are being taken from "var/themes_repository" and also put into "var/themes_repository" directory.'
+            );
     }
 
     /**
@@ -66,6 +72,26 @@ class AddonExportCommand extends Command
 
         $addon = new Addon($addon_id, $abs_cart_path);
         $addon_files_glob_masks = $addon->getFilesGlobMasks();
+
+        $addon_files_glob_masks = array_filter($addon_files_glob_masks, function ($glob_mask) use ($input) {
+            if ($input->getOption('templates-from-design')) {
+
+                // Ignore "var/themes_repository/" masks
+                if (mb_strpos($glob_mask, 'var/themes_repository/') === 0) {
+                    return false;
+                }
+
+                return true;
+            } else {
+                // Ignore "design/themes/" masks
+                if (mb_strpos($glob_mask, 'design/themes/') === 0) {
+                    return false;
+                }
+
+                return true;
+            }
+        });
+
         $glob_matches = $addon->matchFilesAgainstGlobMasks($addon_files_glob_masks, $abs_cart_path);
 
         $counter = 0;
@@ -83,7 +109,7 @@ class AddonExportCommand extends Command
 
             // Add-on templates at the "design/" directory will be
             // exported to the "var/themes_repository/" directory.
-            if (mb_strpos($rel_filepath, 'design/themes/') === 0) {
+            if ($input->getOption('templates-from-design') && mb_strpos($rel_filepath, 'design/themes/') === 0) {
                 $abs_addon_filepath = $abs_addon_path
                     . 'var/themes_repository/'
                     . mb_substr($rel_filepath, mb_strlen('design/themes/'));

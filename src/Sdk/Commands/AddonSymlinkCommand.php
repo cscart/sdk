@@ -42,6 +42,11 @@ class AddonSymlinkCommand extends Command
                 'r',
                 InputOption::VALUE_NONE,
                 'Created symlinks will have a relative path to the target file. By default the created symlinks have an absolute path to target.'
+            )
+            ->addOption('templates-to-design',
+                null,
+                InputOption::VALUE_NONE,
+                'Whether to take the add-on templates from "var/themes_repository" path at the add-on directory and put them at "design/themes" path in the CS-Cart installation directory . When this option is not specified, the templates are being taken from "var/themes_repository" and also put into "var/themes_repository" directory.'
             );
     }
 
@@ -63,6 +68,18 @@ class AddonSymlinkCommand extends Command
 
         $addon = new Addon($addon_id, $abs_addon_path);
         $addon_files_glob_masks = $addon->getFilesGlobMasks();
+
+        $addon_files_glob_masks = array_filter($addon_files_glob_masks, function ($glob_mask) {
+
+            // Always ignore "design/themes/" masks because there shouldn't
+            // be such directory in add-on files directory
+            if (mb_strpos($glob_mask, 'design/themes/') === 0) {
+                return false;
+            }
+
+            return true;
+        });
+
         $glob_matches = $addon->matchFilesAgainstGlobMasks($addon_files_glob_masks, $abs_addon_path);
 
         $output->writeln(sprintf('<fg=magenta;options=bold>Creating symlinks at the "%s" directory:</>',
@@ -74,7 +91,7 @@ class AddonSymlinkCommand extends Command
 
             // Add-on templates at the "var/themes_repository/" directory will be
             // symlinked to the "design/themes/" directory.
-            if (mb_strpos($rel_filepath, 'var/themes_repository/') === 0) {
+            if ($input->getOption('templates-to-design') && mb_strpos($rel_filepath, 'var/themes_repository/') === 0) {
                 $abs_cart_filepath = $abs_cart_path
                     . 'design/themes/'
                     . mb_substr($rel_filepath, mb_strlen('var/themes_repository/'));

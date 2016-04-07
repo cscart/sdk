@@ -53,12 +53,20 @@ class AddonSyncCommand extends Command
 
         $arguments = array(
             'name' => $input->getArgument('name'),
-            'addon-directory'    => $input->getArgument('addon-directory'),
-            'cart-directory'    => $input->getArgument('cart-directory'),
+            'addon-directory' => $input->getArgument('addon-directory'),
+            'cart-directory' => $input->getArgument('cart-directory'),
         );
 
-        $export_input = new ArrayInput($arguments + ['--delete' => true]);
-        $symlink_input = new ArrayInput($arguments + ['--relative'  => $input->getOption('relative')]);
+        $export_input = new ArrayInput($arguments + [
+                '--delete' => true,
+                '--templates-from-design' => true,
+            ]
+        );
+        $symlink_input = new ArrayInput($arguments + [
+                '--relative' => $input->getOption('relative'),
+                '--templates-to-design' => true,
+            ]
+        );
 
         $addon_export_command->run($export_input, $output);
         $output->writeln('');
