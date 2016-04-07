@@ -8,10 +8,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Filesystem\Filesystem;
+use Tygh\Sdk\Commands\Traits\ValidateCartPathTrait;
 use Tygh\Sdk\Entities\Addon;
 
 class AddonExportCommand extends Command
 {
+    use ValidateCartPathTrait;
     /**
      * @inheritdoc
      */
@@ -38,8 +40,7 @@ class AddonExportCommand extends Command
                 'd',
                 InputOption::VALUE_NONE,
                 'Files and directories will be moved instead of being copied.'
-            );
-        ;
+            );;
     }
 
     /**
@@ -51,6 +52,8 @@ class AddonExportCommand extends Command
 
         $addon_id = $input->getArgument('name');
         $abs_cart_path = rtrim(realpath($input->getArgument('cart-directory')), '\\/') . '/';
+
+        $this->validateCartPath($abs_cart_path, $input, $output);
 
         $fs->mkdir($input->getArgument('addon-directory'), 0755);
 
@@ -116,7 +119,7 @@ class AddonExportCommand extends Command
                     $fs->mirror($abs_cart_filepath, $abs_addon_filepath, null, [
                         'override' => true, // Override existing files at target directory
                     ]);
-                } elseif(is_file($abs_cart_filepath)) {
+                } elseif (is_file($abs_cart_filepath)) {
                     $fs->copy($abs_cart_filepath, $abs_addon_filepath, true);
                 }
             }

@@ -8,10 +8,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Filesystem\Filesystem;
+use Tygh\Sdk\Commands\Traits\ValidateCartPathTrait;
 use Tygh\Sdk\Entities\Addon;
 
 class AddonSymlinkCommand extends Command
 {
+    use ValidateCartPathTrait;
+
     /**
      * @inheritdoc
      */
@@ -52,6 +55,8 @@ class AddonSymlinkCommand extends Command
         $addon_id = $input->getArgument('name');
 
         $abs_cart_path = rtrim(realpath($input->getArgument('cart-directory')), '\\/') . '/';
+        $this->validateCartPath($abs_cart_path, $input, $output);
+
         $abs_addon_path = rtrim(realpath($input->getArgument('addon-directory')), '\\/') . '/';
 
         chdir($abs_addon_path);
