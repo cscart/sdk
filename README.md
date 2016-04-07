@@ -49,12 +49,12 @@ Help:
 ```
 
 ##### addon:export
-Moves all add-on files to the separate directory, preserving the structure of directories.
+Copies or moves all add-on files to the separate directory, preserving the structure of directories.
 
 ```
 $ cscart-sdk addon:export --help
 Usage:
-  addon:export <name> <addon-directory> <cart-directory>
+  addon:export [options] [--] <name> <addon-directory> <cart-directory>
 
 Arguments:
   name                  Add-on ID (name)
@@ -62,6 +62,7 @@ Arguments:
   cart-directory        Path to CS-Cart installation directory
 
 Options:
+  -d, --delete          Files and directories will be moved instead of being copied.
   -h, --help            Display this help message
   -q, --quiet           Do not output any message
   -V, --version         Display this application version
@@ -71,7 +72,7 @@ Options:
   -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
 Help:
- Moves all add-on files to the separate directory, preserving the structure of directories.
+ Copies or moves all add-on files to the separate directory, preserving the structure of directories.
 ```
 
 ##### addon:sync

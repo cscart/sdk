@@ -57,8 +57,9 @@ class AddonSyncCommand extends Command
             'cart-directory'    => $input->getArgument('cart-directory'),
         );
 
-        $export_input = new ArrayInput($arguments);
+        $export_input = new ArrayInput($arguments + ['--delete' => true]);
         $symlink_input = new ArrayInput($arguments + ['--relative'  => $input->getOption('relative')]);
+
         $addon_export_command->run($export_input, $output);
         $output->writeln('');
         $addon_symlink_command->run($symlink_input, $output);
