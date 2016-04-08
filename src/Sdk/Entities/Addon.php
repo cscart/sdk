@@ -35,6 +35,7 @@ class Addon
             // General files
             "app/addons/{$this->id}",
             "var/langs/**/addons/{$this->id}.po",
+            "js/addons/{$this->id}",
 
             // Backend templates and assets
             "design/backend/css/addons/{$this->id}",
