@@ -36,6 +36,8 @@ class Addon
             "app/addons/{$this->id}",
             "var/langs/**/addons/{$this->id}.po",
             "js/addons/{$this->id}",
+            "app/payments/{$this->id}.php",
+
 
             // Backend templates and assets
             "design/backend/css/addons/{$this->id}",
