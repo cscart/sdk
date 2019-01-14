@@ -104,6 +104,32 @@ Help:
  Synchronizes add-on files between CS-Cart installation directory and the separate directory storing all add-on files. Calling this command has the same effect as calling the "addon:export" and "addon:symlink" commands simultaneously.
 ```
 
+##### addon:build_upgrade
+Creates upgrade package between add-on versions
+
+```
+$ php bin/cscart-sdk addon:build_upgrade --help
+Usage:
+  addon:build_upgrade <old_addon_version_archive_path> <new_addon_version_archive_path> <result_dir_path>
+
+Arguments:
+  old_addon_version_archive_path  Old add-on version archive path
+  new_addon_version_archive_path  New add-on version archive path
+  result_dir_path                 Path to a directory where the built upgrade package will be placed
+
+Options:
+  -h, --help                      Display this help message
+  -q, --quiet                     Do not output any message
+  -V, --version                   Display this application version
+      --ansi                      Force ANSI output
+      --no-ansi                   Disable ANSI output
+  -n, --no-interaction            Do not ask any interactive question
+  -v|vv|vvv, --verbose            Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+Help:
+  Creates upgrade package between add-on versions
+```
+
 ## Contributing
 To contribute to this project, you need to know how to work with Git and GitHub:
 
