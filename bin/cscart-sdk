@@ -1,10 +1,20 @@
 #!/usr/bin/env php
 <?php
-foreach (array(
-        __DIR__ . '/../../../autoload.php',
-        __DIR__ . '/../vendor/autoload.php',
-        __DIR__ . '/vendor/autoload.php'
-    ) as $file) {
+foreach ([
+             __DIR__ . '/../../../autoload.php',
+             __DIR__ . '/../vendor/autoload.php',
+             __DIR__ . '/vendor/autoload.php',
+         ] as $file) {
+    if (file_exists($file)) {
+        require_once $file;
+        break;
+    }
+}
+
+foreach ([
+             __DIR__ . '/../vendor/cscart/upgrade-builder/autoloader.php',
+             __DIR__ . '/vendor/cscart/upgrade-builder/autoloader.php',
+         ] as $file) {
     if (file_exists($file)) {
         require_once $file;
         break;
@@ -19,6 +29,7 @@ $application->setName('CS-Cart Command-line Tools');
 $application->add(new \Tygh\Sdk\Commands\AddonSymlinkCommand());
 $application->add(new \Tygh\Sdk\Commands\AddonExportCommand());
 $application->add(new \Tygh\Sdk\Commands\AddonSyncCommand());
+$application->add(new \Tygh\Sdk\Commands\AddonBuildUpgradeCommand());
 
 $application->run();
 
