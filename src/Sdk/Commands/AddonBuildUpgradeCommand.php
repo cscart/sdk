@@ -62,6 +62,8 @@ class AddonBuildUpgradeCommand extends Command
         $new_version_archive = new AddonReleaseArchive($new_archive_path);
 
         $addon_upgrade_builder = new AddonBuilder($old_version_archive, $new_version_archive, $result_dir_path);
+        $addon_upgrade_builder->initPaths();
+
         $addon_upgrade_builder->run();
     }
 }
