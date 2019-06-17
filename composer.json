@@ -6,9 +6,9 @@
             "type": "package",
             "package": {
                 "name": "cscart/upgrade-builder",
-                "version": "master",
+                "version": "1.0.0",
                 "source": {
-                    "url": "https://github.com/cscart/upgrade-builder",
+                    "url": "https://github.com/cscart/upgrade-builder.git",
                     "type": "git",
                     "reference": "master"
                 }
@@ -19,7 +19,7 @@
         "symfony/console": "~3.0",
         "symfony/filesystem": "~3.0",
         "ext-mbstring": "*",
-        "cscart/upgrade-builder": "dev-master",
+        "cscart/upgrade-builder": "~1.0",
         "ext-simplexml": "*"
     },
     "autoload": {
