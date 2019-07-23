@@ -1,20 +1,6 @@
 {
     "name": "cscart/sdk",
     "description": "Command-line tools for CS-Cart & Multivendor developers",
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "cscart/upgrade-builder",
-                "version": "1.0.0",
-                "source": {
-                    "url": "https://github.com/cscart/upgrade-builder.git",
-                    "type": "git",
-                    "reference": "master"
-                }
-            }
-        }
-    ],
     "require": {
         "symfony/console": "~3.0",
         "symfony/filesystem": "~3.0",
@@ -30,11 +16,5 @@
     "bin": [
         "bin/cscart-sdk"
     ],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Alexander Bolshakov",
-            "email": "abolshakov@cs-cart.com"
-        }
-    ]
+    "license": "MIT"
 }

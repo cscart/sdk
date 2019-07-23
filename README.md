@@ -196,7 +196,7 @@ Don't forget to specify path to the correct directory where you cloned your fork
 After that, execute this command:
 
 ```sh
-$ composer global require "cscart/sdk:*"
+$ composer global require cscart/sdk
 ```
 
 You need to do this only once; there is no need to re-install the local package every time you make a change in code. Directory with forked repository will be symlinked to your globally installed Composer packages directory.
