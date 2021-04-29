@@ -52,9 +52,10 @@ class AddonExportCommand extends Command
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $fs = new Filesystem();
+       
 
         $addon_id = $input->getArgument('name');
         $abs_cart_path = rtrim(realpath($input->getArgument('cart-directory')), '\\/') . '/';
@@ -158,5 +159,8 @@ class AddonExportCommand extends Command
             $counter,
             $input->getOption('delete') ? 'moved' : 'copied'
         ));
+
+        return Command::SUCCESS;
+
     }
 }

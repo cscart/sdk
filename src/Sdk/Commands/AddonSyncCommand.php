@@ -46,7 +46,7 @@ class AddonSyncCommand extends Command
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $addon_export_command = $this->getApplication()->find('addon:export');
         $addon_symlink_command = $this->getApplication()->find('addon:symlink');
@@ -71,5 +71,7 @@ class AddonSyncCommand extends Command
         $addon_export_command->run($export_input, $output);
         $output->writeln('');
         $addon_symlink_command->run($symlink_input, $output);
+
+        return Command::SUCCESS;
     }
 }

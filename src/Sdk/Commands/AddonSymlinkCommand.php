@@ -53,7 +53,7 @@ class AddonSymlinkCommand extends Command
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $fs = new Filesystem();
 
@@ -141,6 +141,8 @@ class AddonSymlinkCommand extends Command
             $output->writeln(sprintf('Creating symlink for %s... <info>OK</info>',
                 $rel_filepath
             ));
+
+            return Command::SUCCESS;
         }
     }
 }

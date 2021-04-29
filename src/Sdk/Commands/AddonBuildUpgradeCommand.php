@@ -41,7 +41,7 @@ class AddonBuildUpgradeCommand extends Command
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $fs = new Filesystem();
 
@@ -65,5 +65,7 @@ class AddonBuildUpgradeCommand extends Command
         $addon_upgrade_builder->initPaths();
 
         $addon_upgrade_builder->run();
+
+        return Command::SUCCESS;
     }
 }
