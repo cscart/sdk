@@ -4,6 +4,7 @@
     "require": {
         "symfony/console": "~4.0",
         "symfony/filesystem": "~4.0",
+        "symfony/twig-bridge": "~4.0",
         "ext-mbstring": "*",
         "cscart/upgrade-builder": "~1.0",
         "ext-simplexml": "*"

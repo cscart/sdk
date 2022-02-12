@@ -104,6 +104,35 @@ Help:
  Synchronizes add-on files between CS-Cart installation directory and the separate directory storing all add-on files. Calling this command has the same effect as calling the "addon:export" and "addon:symlink" commands simultaneously.
 ```
 
+##### addon:create
+Creates addon directory structure and xml/.po files.
+
+```
+Usage:
+  addon:create [options] [--] <name> <addon-directory>
+
+Arguments:
+  name                     Add-on ID (name)
+  addon-directory          Path to addon directory.
+
+Options:
+  -t, --theme=THEME        Themes [default: ["responsive"]] (multiple values allowed)
+  -l, --language=LANGUAGE  Languages [default: ["en","ru"]] (multiple values allowed)
+  -h, --help               Display this help message
+  -q, --quiet              Do not output any message
+  -V, --version            Display this application version
+      --ansi               Force ANSI output
+      --no-ansi            Disable ANSI output
+  -n, --no-interaction     Do not ask any interactive question
+  -v|vv|vvv, --verbose     Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+Help:
+   * Existing directories and files will be not overwritten.
+   * Default templates are located in `cscart-sdk/templates/addon`.
+   * User can create own templates in `~/.cscart-sdk/templates/addon`.
+```
+
+
 ##### addon:build_upgrade
 Creates upgrade package between add-on versions
 
