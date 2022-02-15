@@ -140,7 +140,7 @@ class AddonCreateCommand extends Command
         }
 
         foreach ($languages as $lang){
-            $po_file = "var/langs/$lang/addons/$addon_id.po";
+            $po_file = "var/langs/{$lang}/addons/{$addon_id}.po";
             $po_file_full_path = $addon_directory . '/' . $po_file;
             $lang_dir_full_path = dirname($po_file_full_path);
             if (file_exists($po_file_full_path)){
