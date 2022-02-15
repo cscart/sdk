@@ -154,7 +154,7 @@ class AddonCreateCommand extends Command
                         $lang_dir_full_path
                     ));
                 }
-                $po_content = $this->twig()->render('addon/lang/'.$lang.'.po.twig', [
+                $po_content = $this->twig()->render('addon/lang/' . $lang . '.po.twig', [
                     'addon_id' => $addon_id
                 ]);
                 file_put_contents($po_file_full_path, $po_content);
