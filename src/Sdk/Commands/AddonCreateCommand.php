@@ -70,7 +70,7 @@ class AddonCreateCommand extends Command
                 array('responsive')
             )
             ->addOption(
-                'locales',
+                'locale',
                 'l',
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'Locale',
@@ -89,7 +89,7 @@ class AddonCreateCommand extends Command
         $addon_id = $input->getArgument('name');
         $addon_directory = $input->getArgument('addon-directory');
         $themes = $input->getOption('theme');
-        $locales = $input->getOption('locales');
+        $locales = $input->getOption('locale');
         $scheme_version = $input->getOption('scheme-version');
 
         $fs->mkdir($addon_directory, 0755);

@@ -121,7 +121,7 @@ Arguments:
 Options:
   -s, --scheme-version=SCHEME-VERSION  Addon scheme version [default: 3]
   -t, --theme=THEME                    Themes [default: ["responsive"]] (multiple values allowed)
-  -l, --locales=LOCALES                Locale [default: ["en_US","ru_RU"]] (multiple values allowed)
+  -l, --locale=LOCALE                  Locale [default: ["en_US","ru_RU"]] (multiple values allowed)
   -h, --help                           Display this help message
   -q, --quiet                          Do not output any message
   -V, --version                        Display this application version
