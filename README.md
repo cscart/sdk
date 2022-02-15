@@ -108,23 +108,27 @@ Help:
 Creates addon directory structure and xml/.po files.
 
 ```
+Description:
+  Creates addon directory structure and xml/.po files.
+
 Usage:
   addon:create [options] [--] <name> <addon-directory>
 
 Arguments:
-  name                     Add-on ID (name)
-  addon-directory          Path to addon directory.
+  name                                 Add-on ID (name)
+  addon-directory                      Path to addon directory.
 
 Options:
-  -t, --theme=THEME        Themes [default: ["responsive"]] (multiple values allowed)
-  -l, --language=LANGUAGE  Languages [default: ["en","ru"]] (multiple values allowed)
-  -h, --help               Display this help message
-  -q, --quiet              Do not output any message
-  -V, --version            Display this application version
-      --ansi               Force ANSI output
-      --no-ansi            Disable ANSI output
-  -n, --no-interaction     Do not ask any interactive question
-  -v|vv|vvv, --verbose     Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+  -s, --scheme-version=SCHEME-VERSION  Addon scheme version [default: 3]
+  -t, --theme=THEME                    Themes [default: ["responsive"]] (multiple values allowed)
+  -l, --locales=LOCALES                Locale [default: ["en_US","ru_RU"]] (multiple values allowed)
+  -h, --help                           Display this help message
+  -q, --quiet                          Do not output any message
+  -V, --version                        Display this application version
+      --ansi                           Force ANSI output
+      --no-ansi                        Disable ANSI output
+  -n, --no-interaction                 Do not ask any interactive question
+  -v|vv|vvv, --verbose                 Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
 Help:
    * Existing directories and files will be not overwritten.
