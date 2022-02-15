@@ -138,18 +138,18 @@ class AddonCreateCommand extends Command
             }
         }
 
-        $manifest_file = $addon->getXmlSchemePath();
-        if (file_exists($manifest_file)) {
-            $output->writeln(sprintf('Manifest already exists "%s", <info>skipping</info>',
-                $manifest_file
+        $scheme_file = $addon->getXmlSchemePath();
+        if (file_exists($scheme_file)) {
+            $output->writeln(sprintf('Addon scheme already exists "%s", <info>skipping</info>',
+                $scheme_file
             ));
         } else {
-            $manifest_content = $this->twig()->render('addon/addon.xml.twig', [
+            $scheme_content = $this->twig()->render('addon/addon.xml.twig', [
                 'addon_id' => $addon_id
             ]);
-            file_put_contents($manifest_file, $manifest_content);
-            $output->writeln(sprintf('Created manifest "%s"  <info>OK</info>',
-                $manifest_file
+            file_put_contents($scheme_file, $scheme_content);
+            $output->writeln(sprintf('Created addon scheme "%s"  <info>OK</info>',
+                $scheme_file
             ));
         }
 
