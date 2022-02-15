@@ -54,6 +54,13 @@ class AddonCreateCommand extends Command
                 'Path to addon directory.'
             )
             ->addOption(
+                'scheme-version',
+                's',
+                InputOption::VALUE_REQUIRED,
+                'Addon scheme version',
+                3
+            )
+            ->addOption(
                 'theme',
                 't',
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
@@ -81,13 +88,15 @@ class AddonCreateCommand extends Command
         $addon_directory = $input->getArgument('addon-directory');
         $themes = $input->getOption('theme');
         $languages = $input->getOption('language');
+        $scheme_version = $input->getOption('scheme-version');
 
         $fs->mkdir($addon_directory, 0755);
 
         $abs_addon_path = rtrim(realpath($input->getArgument('addon-directory')), '\\/') . '/';
 
-        $output->writeln(sprintf('<fg=magenta;options=bold>Addon: id: "%s", themes: "%s", languages: "%s", dir: "%s"</>',
+        $output->writeln(sprintf('<fg=magenta;options=bold>Addon: id: "%s", scheme version: "%s" themes: "%s", languages: "%s", dir: "%s"</>',
             $addon_id,
+            $scheme_version,
             implode(',',$themes),
             implode(',',$languages),
             $abs_addon_path
@@ -144,7 +153,7 @@ class AddonCreateCommand extends Command
                 $scheme_file
             ));
         } else {
-            $scheme_content = $this->twig()->render('addon/addon.xml.twig', [
+            $scheme_content = $this->twig()->render('addon/addon_v' . $scheme_version . '.xml.twig', [
                 'addon_id' => $addon_id
             ]);
             file_put_contents($scheme_file, $scheme_content);
