@@ -19,9 +19,11 @@ trait TwigEnvironmentTrait
     {
         $loader = new FilesystemLoader([
             $_SERVER['HOME'] . '/.cscart-sdk/templates',
-            CSCART_SDK_ROOT . '/templates' // SDK default dir
+            $this->getSdkTemplatesDir()
         ]);
 
         return new Environment($loader );
     }
+
+    abstract protected function getSdkTemplatesDir() : string;
 }

@@ -16,6 +16,20 @@ class AddonCreateCommand extends Command
 {
     use TwigEnvironmentTrait;
 
+    private string $sdkTemplatesDir;
+
+    public function __construct($sdkTemplatesDir)
+    {
+        parent::__construct();
+        $this->sdkTemplatesDir = $sdkTemplatesDir;
+    }
+
+    protected function getSdkTemplatesDir(): string
+    {
+        return $this->sdkTemplatesDir;
+    }
+
+
     /**
      * @inheritdoc
      */
