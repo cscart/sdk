@@ -1,7 +1,9 @@
 <?php
 namespace Tygh\Sdk\Commands;
 
+use Locale;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -68,11 +70,11 @@ class AddonCreateCommand extends Command
                 array('responsive')
             )
             ->addOption(
-                'language',
+                'locales',
                 'l',
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Languages',
-                array('en','ru')
+                'Locale',
+                array('en_US','ru_RU')
             )
         ;
     }
@@ -87,18 +89,18 @@ class AddonCreateCommand extends Command
         $addon_id = $input->getArgument('name');
         $addon_directory = $input->getArgument('addon-directory');
         $themes = $input->getOption('theme');
-        $languages = $input->getOption('language');
+        $locales = $input->getOption('locales');
         $scheme_version = $input->getOption('scheme-version');
 
         $fs->mkdir($addon_directory, 0755);
 
         $abs_addon_path = rtrim(realpath($input->getArgument('addon-directory')), '\\/') . '/';
 
-        $output->writeln(sprintf('<fg=magenta;options=bold>Addon: id: "%s", scheme version: "%s" themes: "%s", languages: "%s", dir: "%s"</>',
+        $output->writeln(sprintf('<fg=magenta;options=bold>Addon: id: "%s", scheme version: "%s" themes: "%s", locales: "%s", dir: "%s"</>',
             $addon_id,
             $scheme_version,
             implode(',',$themes),
-            implode(',',$languages),
+            implode(',',$locales),
             $abs_addon_path
         ));
 
@@ -162,7 +164,9 @@ class AddonCreateCommand extends Command
             ));
         }
 
-        foreach ($languages as $lang){
+        foreach ($locales as $locale){
+            $lang =  Locale::getPrimaryLanguage($locale);
+
             $po_file = "var/langs/{$lang}/addons/{$addon_id}.po";
             $po_file_full_path = $addon_directory . '/' . $po_file;
             $lang_dir_full_path = dirname($po_file_full_path);
@@ -177,12 +181,13 @@ class AddonCreateCommand extends Command
                         $lang_dir_full_path
                     ));
                 }
-                $po_content = $this->twig()->render('addon/lang/' . $lang . '.po.twig', [
-                    'addon_id' => $addon_id
+                $po_content = $this->twig()->render('addon/lang.po.twig', [
+                    'addon_id' => $addon_id,
+                    'locale' => $locale
                 ]);
                 file_put_contents($po_file_full_path, $po_content);
-                $output->writeln(sprintf('Created language "%s" file: "%s"  <info>OK</info>',
-                    $lang,
+                $output->writeln(sprintf('Created locale "%s" file: "%s"  <info>OK</info>',
+                    $locale,
                     $po_file_full_path
                 ));
             }
