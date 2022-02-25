@@ -17,10 +17,12 @@ trait TwigEnvironmentTrait
 
     private function createTwigEnvironment(): Environment
     {
-        $loader = new FilesystemLoader([
-            $_SERVER['HOME'] . '/.cscart-sdk/templates',
-            $this->getSdkTemplatesDir()
-        ]);
+        $localTemplatesFolder = $_SERVER['HOME'] . '/.cscart-sdk/templates';
+        $loader = new FilesystemLoader();
+        if (file_exists($localTemplatesFolder)) {
+            $loader->addPath($localTemplatesFolder);
+        }
+        $loader->addPath($this->getSdkTemplatesDir());
 
         return new Environment($loader );
     }
