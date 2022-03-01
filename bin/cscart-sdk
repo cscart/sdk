@@ -23,6 +23,7 @@ $application->add(new \Tygh\Sdk\Commands\AddonSymlinkCommand());
 $application->add(new \Tygh\Sdk\Commands\AddonExportCommand());
 $application->add(new \Tygh\Sdk\Commands\AddonSyncCommand());
 $application->add(new \Tygh\Sdk\Commands\AddonBuildUpgradeCommand());
+$application->add(new \Tygh\Sdk\Commands\AddonCreateCommand(__DIR__ . '/../templates'));
 
 $application->run();
 
