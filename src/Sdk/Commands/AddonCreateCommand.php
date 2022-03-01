@@ -1,18 +1,16 @@
 <?php
+
 namespace Tygh\Sdk\Commands;
 
 use Locale;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Filesystem\Filesystem;
 use Tygh\Sdk\Commands\Traits\TwigEnvironmentTrait;
 use Tygh\Sdk\Entities\Addon;
-use Twig\Environment;
 
 class AddonCreateCommand extends Command
 {
@@ -31,7 +29,6 @@ class AddonCreateCommand extends Command
         return $this->sdkTemplatesDir;
     }
 
-
     /**
      * @inheritdoc
      */
@@ -43,15 +40,17 @@ class AddonCreateCommand extends Command
                 "Creates addon directory structure and xml/.po files."
             )
             ->setHelp(
-                " * Existing directories and files will be not overwritten.\n".
-                " * Default templates are located in `cscart-sdk/templates/addon`.\n".
+                " * Existing directories and files will be not overwritten.\n" .
+                " * Default templates are located in `cscart-sdk/templates/addon`.\n" .
                 " * User can create own templates in `~/.cscart-sdk/templates/addon`."
             )
-            ->addArgument('name',
+            ->addArgument(
+                'name',
                 InputArgument::REQUIRED,
                 'Add-on ID (name)'
             )
-            ->addArgument('addon-directory',
+            ->addArgument(
+                'addon-directory',
                 InputArgument::REQUIRED,
                 'Path to addon directory.'
             )
@@ -67,16 +66,15 @@ class AddonCreateCommand extends Command
                 't',
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'Themes',
-                array('responsive')
+                ['responsive']
             )
             ->addOption(
                 'locale',
                 'l',
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'Locale',
-                array('en_US','ru_RU')
-            )
-        ;
+                ['en_US']
+            );
     }
 
     /**
@@ -96,20 +94,23 @@ class AddonCreateCommand extends Command
 
         $abs_addon_path = rtrim(realpath($input->getArgument('addon-directory')), '\\/') . '/';
 
-        $output->writeln(sprintf('<fg=magenta;options=bold>Addon: id: "%s", scheme version: "%s" themes: "%s", locales: "%s", dir: "%s"</>',
-            $addon_id,
-            $scheme_version,
-            implode(',',$themes),
-            implode(',',$locales),
-            $abs_addon_path
-        ));
+        $output->writeln(
+            sprintf(
+                '<fg=magenta;options=bold>Addon: id: "%s", scheme version: "%s" themes: "%s", locales: "%s", dir: "%s"</>',
+                $addon_id,
+                $scheme_version,
+                implode(',', $themes),
+                implode(',', $locales),
+                $abs_addon_path
+            )
+        );
 
         $addon = new Addon($addon_id, $addon_directory);
         $addon_files_glob_masks = $addon->getFilesGlobMasks();
 
-        $dirs_to_create = array();
+        $dirs_to_create = [];
 
-        foreach ($addon_files_glob_masks as $mask){
+        foreach ($addon_files_glob_masks as $mask) {
             // Ignore "design/themes/" masks
             if (mb_strpos($mask, 'design/themes/') === 0) {
                 continue;
@@ -135,61 +136,82 @@ class AddonCreateCommand extends Command
         // Sort for more nice output
         sort($dirs_to_create);
 
-        foreach ($dirs_to_create as $dir){
+        foreach ($dirs_to_create as $dir) {
             $dir_full_path = $addon_directory . '/' . $dir;
-            if (file_exists($dir_full_path)){
-                $output->writeln(sprintf('Directory already exists "%s", <info>skipping</info>',
-                    $dir
-                ));
+            if (file_exists($dir_full_path)) {
+                $output->writeln(
+                    sprintf(
+                        'Directory already exists "%s", <info>skipping</info>',
+                        $dir
+                    )
+                );
             } else {
                 $fs->mkdir($dir_full_path, 0755);
-                $output->writeln(sprintf('Created directory "%s"  <info>OK</info>',
-                    $dir_full_path
-                ));
+                $output->writeln(
+                    sprintf(
+                        'Created directory "%s"  <info>OK</info>',
+                        $dir_full_path
+                    )
+                );
             }
         }
 
         $scheme_file = $addon->getXmlSchemePath();
         if (file_exists($scheme_file)) {
-            $output->writeln(sprintf('Addon scheme already exists "%s", <info>skipping</info>',
-                $scheme_file
-            ));
+            $output->writeln(
+                sprintf(
+                    'Addon scheme already exists "%s", <info>skipping</info>',
+                    $scheme_file
+                )
+            );
         } else {
             $scheme_content = $this->twig()->render('addon/addon_v' . $scheme_version . '.xml.twig', [
-                'addon_id' => $addon_id
+                'addon_id' => $addon_id,
             ]);
             file_put_contents($scheme_file, $scheme_content);
-            $output->writeln(sprintf('Created addon scheme "%s"  <info>OK</info>',
-                $scheme_file
-            ));
+            $output->writeln(
+                sprintf(
+                    'Created addon scheme "%s"  <info>OK</info>',
+                    $scheme_file
+                )
+            );
         }
 
-        foreach ($locales as $locale){
-            $lang =  Locale::getPrimaryLanguage($locale);
+        foreach ($locales as $locale) {
+            $lang = Locale::getPrimaryLanguage($locale);
 
             $po_file = "var/langs/{$lang}/addons/{$addon_id}.po";
             $po_file_full_path = $addon_directory . '/' . $po_file;
             $lang_dir_full_path = dirname($po_file_full_path);
-            if (file_exists($po_file_full_path)){
-                $output->writeln(sprintf('Translation already exists "%s", <info>skipping</info>',
-                    $po_file_full_path
-                ));
+            if (file_exists($po_file_full_path)) {
+                $output->writeln(
+                    sprintf(
+                        'Translation already exists "%s", <info>skipping</info>',
+                        $po_file_full_path
+                    )
+                );
             } else {
-                if (!file_exists($lang_dir_full_path)){
+                if (!file_exists($lang_dir_full_path)) {
                     $fs->mkdir($lang_dir_full_path, 0755);
-                    $output->writeln(sprintf('Created directory "%s"  <info>OK</info>',
-                        $lang_dir_full_path
-                    ));
+                    $output->writeln(
+                        sprintf(
+                            'Created directory "%s"  <info>OK</info>',
+                            $lang_dir_full_path
+                        )
+                    );
                 }
                 $po_content = $this->twig()->render('addon/lang.po.twig', [
                     'addon_id' => $addon_id,
-                    'locale' => $locale
+                    'locale'   => $locale,
                 ]);
                 file_put_contents($po_file_full_path, $po_content);
-                $output->writeln(sprintf('Created locale "%s" file: "%s"  <info>OK</info>',
-                    $locale,
-                    $po_file_full_path
-                ));
+                $output->writeln(
+                    sprintf(
+                        'Created locale "%s" file: "%s"  <info>OK</info>',
+                        $locale,
+                        $po_file_full_path
+                    )
+                );
             }
         }
     }
