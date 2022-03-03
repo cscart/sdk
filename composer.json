@@ -1,8 +1,8 @@
 {
     "name": "cscart/sdk",
-    "description": "Command-line tools for CS-Cart & Multivendor developers",
+    "description": "Command-line tools for CS-Cart & Multi-Vendor developers",
     "require": {
-        "symfony/console": "~4.0",
+        "symfony/console": "^5.2",
         "symfony/filesystem": "~4.0",
         "symfony/twig-bridge": "~4.0",
         "ext-mbstring": "*",

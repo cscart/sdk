@@ -80,7 +80,7 @@ class AddonCreateCommand extends Command
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $fs = new Filesystem();
 
@@ -214,5 +214,7 @@ class AddonCreateCommand extends Command
                 );
             }
         }
+
+        return Command::SUCCESS;
     }
 }

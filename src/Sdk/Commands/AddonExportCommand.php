@@ -52,7 +52,7 @@ class AddonExportCommand extends Command
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $fs = new Filesystem();
 
@@ -158,5 +158,7 @@ class AddonExportCommand extends Command
             $counter,
             $input->getOption('delete') ? 'moved' : 'copied'
         ));
+
+        return Command::SUCCESS;
     }
 }
